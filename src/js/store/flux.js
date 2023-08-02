@@ -1,42 +1,26 @@
 const getState = ({ getStore, getActions, setStore }) => {
 	return {
 		store: {
-			demo: [
-				{
-					title: "FIRST",
-					background: "white",
-					initial: "white"
-				},
-				{
-					title: "SECOND",
-					background: "white",
-					initial: "white"
-				}
-			]
+			contactList: [],
 		},
 		actions: {
-			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
-			loadSomeData: () => {
-				/**
-					fetch().then().then(data => setStore({ "foo": data.bar }))
-				*/
-			},
-			changeColor: (index, color) => {
-				//get the store
+			addContact: (contact) => {
 				const store = getStore();
+				setStore({ contactList: [...store.contactList, contact] })
+			},
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
+			edit: (id, contact) => {
+				const store = getStore();
+				let newList = store.contactList.filter((contact, index) => index !== id);
+				setStore({ contactList: [...newList, contact] });
+			},
+
+			delete: (id) => {
+				const store = getStore();
+				setStore({
+					contactList: store.contactList.filter((contact, index) =>
+						id !== index),
 				});
-
-				//reset the global store
-				setStore({ demo: demo });
 			}
 		}
 	};
